@@ -69,6 +69,7 @@ public class Dog {
         thirsty++;
         happiness++;
     }
+
     public void playDog() {
         happiness = happiness - 6;
         hungry++;
@@ -77,5 +78,6 @@ public class Dog {
         stamina++;
     }
 
-
 }
+
+
