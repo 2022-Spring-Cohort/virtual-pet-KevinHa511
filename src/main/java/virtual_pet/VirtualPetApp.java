@@ -1,77 +1,146 @@
 package virtual_pet;
-
 import java.util.Scanner;
-
 public class VirtualPetApp {
 
-    private static Dog Diesel = new Dog("Diesel", 3, 10, 10, 10, 10);
+    Scanner petScan = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("Welcome to the virtual Pet game!");
-        getStatus();
-        System.out.println("Please select the following");
-        GiveRules();
+        VirtualPetApp myApp = new VirtualPetApp();
+        myApp.gameLoop();
+    }
 
+    public void gameLoop() {
+        String userChoice = "";
+        vPetShelter1 myShelter = new vPetShelter1();
+        do{
+            System.out.println("Hello welcome to the Virtual Pet game!! \n");
+            System.out.println("Here is the status of all the pets.");
+            System.out.println(myShelter.getPets());
+            shelterStatus(myShelter);
+            System.out.println("What would you like to do next?.");
+            System.out.println("1. Feed the pets.");
+            System.out.println("2. Give all the pets a drink of water.");
+            System.out.println("3. Play with a pet.");
+            System.out.println("4. surrender a pet.");
+            System.out.println("5. Adopt a pet.");
+            System.out.println("6. Play with all the pets");
+            System.out.println("7. Feed a specific pet");
+            System.out.println("8. Water a specific pet");
+            System.out.println("9. Walk a pet");
+            System.out.println("10. Quit");
+            userChoice = petScan.nextLine();
 
-        while (maxiumumLimit()) {
+            switch (userChoice) {
 
-            Scanner scanner1 = new Scanner(System.in);
-            int playerChoice = Integer.valueOf(scanner1.next());
-            if (playerChoice == 1) {
-                Diesel.feedDog();
-                System.out.println("Thanks for feeding me Hooooooman!");
+                case "1":
+                    myShelter.feedAllPets();
+                    System.out.println("All pets have been fed!");
+                    break;
 
+                case "2":
+                    myShelter.GiveWaterToAll();
+                    System.out.println("All pets have fluid!");
+                    break;
 
-            } else if (playerChoice == 2) {
-                Diesel.waterDog();
-                System.out.println("Wow I was thirsty!");
-            } else if (playerChoice == 0) {
-                GiveRules();
-            } else if (playerChoice == 9) {
-                System.out.println("...Hi");
-            } else if (playerChoice == 3) {
-                getStatus();
-            } else if (playerChoice == 4) {
-                Diesel.sleepDog();
-                System.out.println("Ohhhh I needed that nap!");
-            } else if (playerChoice == 5) {
-                Diesel.playDog();
-                System.out.println("Squirrel!!!");
+                case "3":
+                    System.out.println("What is the name of the pet you would like to play with?");
+                    String petName = petScan.nextLine();
+                    VirtualPets myPet = myShelter.getPetByName(petName);
+                    myPet.playPet();
+                    System.out.println(myPet.getName() + "had a great time!");
+                    break;
+
+                case "4":
+                    System.out.println("What is the pets name?");
+                    String name = petScan.nextLine();
+                    System.out.println("What is the pets description?");
+                    String description = petScan.nextLine();
+                    System.out.println("Do you want an organic pet or a robotic pet?");
+                    String roboticOrganicResponse = petScan.nextLine();
+                    if (roboticOrganicResponse.equalsIgnoreCase("robotic")) {
+                        System.out.println("Do you want a cat or a dog?");
+                        String catOrDogResponse = petScan.nextLine();
+                        if (catOrDogResponse.equalsIgnoreCase("cat")) {
+                            RoboPets myRoboCat = new RoboCat(name, description, 50,50,50);
+                            myShelter.surrenderPet(myRoboCat);
+
+                        }
+                        else if (catOrDogResponse.equalsIgnoreCase("dog")) {
+                            RoboPets myRoboDog = new RoboDog(name, description, 50,50,50);
+                            myShelter.surrenderPet(myRoboDog);
+                        }
+                    }
+
+                    else if (roboticOrganicResponse.equalsIgnoreCase("organic")) {
+                        System.out.println("Do you want a cat or a dog?");
+                        String roboCatOrDogResponse = petScan.nextLine();
+
+                        if (roboCatOrDogResponse.equalsIgnoreCase("cat")) {
+                            OrganicPets myCat = new OrganicCat(name, description, 50, 50,50,50);
+                            myShelter.surrenderPet(myCat);
+                            System.out.println(myShelter.getPets());
+                        }
+                        else if (roboCatOrDogResponse.equalsIgnoreCase("dog")) {
+                            OrganicPets myDog = new OrganicDog(name, description, 50,50,50,50);
+                            myShelter.surrenderPet(myDog);
+                        }
+                    }
+                    break;
+
+                case "5":
+                    System.out.println("What pet do you want to adopt?");
+                    String adoptName = petScan.nextLine();
+                    myShelter.adoptPet(myShelter.getPetByName(adoptName));
+                    break;
+
+                case "6":
+                    myShelter.playAll();
+                    System.out.println("All the pets had a dang ole good time!");
+                    break;
+
+                case "7":
+                    System.out.println("What pet would you like to feed");
+                    String feedName = petScan.nextLine();
+                    VirtualPets myPetFeed = myShelter.getPetByName(feedName);
+                    myPetFeed.energize();
+                    System.out.println(myPetFeed.getName() + " feels energized!");
+                    break;
+
+                case "8":
+                    System.out.println("What pet would you like to give fluid?");
+                    String fluidName = petScan.nextLine();
+                    VirtualPets myPetFluid = myShelter.getPetByName(fluidName);
+                    myPetFluid.fluid();
+                    System.out.println(myPetFluid.getName() + " feels lubricated!");
+                    break;
+
+                case "9":
+                    System.out.println("What pet would you like to walk?");
+                    String walkName = petScan.nextLine();
+                    VirtualPets myPetWalk = myShelter.getPetByName(walkName);
+                    myPetWalk.walk();
+                    System.out.println(myPetWalk.getName() + " went on a walk!");
+                    break;
+
+                default:
+                    System.out.println("Please enter a valid response.");
+
             }
-            if (playerChoice != 0) {
-                Diesel.tick();
-                getStatus();
 
-            }
-            System.out.println("What would you like to do?");
+            myShelter.tick();
         }
-        System.out.println("Sorry Diesel died.");
 
-
-    }
-
-    private static void GiveRules() {
-        System.out.println("0 - Press zero for instructions.");
-        System.out.println("1 - Feed Diesel some food.");
-        System.out.println("2 - Give Diesel some water.");
-        System.out.println("3 - To get Diesel's status.");
-        System.out.println("4 - To have Diesel sleep.");
-        System.out.println("5 - To play with Diesel.");
-        System.out.println("9 - To do nothing.");
-    }
-
-    private static void getStatus() {
-        System.out.println("Diesel's hunger level is " + Diesel.getHungry());
-        System.out.println("Diesel's thirst level is " + Diesel.getThirsty());
-        System.out.println("Diesel's Stamina level is " + Diesel.getStamina());
-        System.out.println("Diesel's Happiness level is " + Diesel.getHappiness());
+        while (userChoice != "10");
 
     }
 
-
-    private static boolean maxiumumLimit() {
-        return Diesel.getHungry() < 20 && Diesel.getThirsty() < 20;
+    private void shelterStatus(vPetShelter1 shelter) {
+        for(VirtualPets pet: shelter.getPets()){
+            System.out.println("Pet: "+ pet.getName());
+        }
     }
-
-
 }
+
+
+
+
